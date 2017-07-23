@@ -216,15 +216,16 @@ patch(void)
 	InjectHook(0x561158, mod24_2, PATCH_JUMP);
 	InjectHook(0x55FEC0, CTimeCycle::StartExtraColour, PATCH_JUMP);
 
-
+#ifdef REPLACE
 	// replace functions!
 	InjectHook(0x5BBAC0, CTimeCycle::Initialise, PATCH_JUMP);
 	InjectHook(0x55F4B0, &CColourSet::ctor, PATCH_JUMP);
 	InjectHook(0x55F870, &CColourSet::Interpolate, PATCH_JUMP);
-	InjectHook(0x561736, CTimeCycle::CalcColoursForPoint);
-	InjectHook(0x56178D, CTimeCycle::CalcColoursForPoint);
+	InjectHook(0x5603D0, CTimeCycle::CalcColoursForPoint, PATCH_JUMP);
+	InjectHook(0x5616E0, CTimeCycle::FindFarClipForCoors, PATCH_JUMP);
+	InjectHook(0x5616E0, CTimeCycle::Update, PATCH_JUMP);
+#endif
 }
-
 
 BOOL WINAPI
 DllMain(HINSTANCE hInst, DWORD reason, LPVOID)

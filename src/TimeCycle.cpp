@@ -69,9 +69,56 @@ float *CTimeCycle::m_fShadowDisplacementX = (float*)0xB79E90;
 float *CTimeCycle::m_fShadowDisplacementY = (float*)0xB79E50;
 int &CTimeCycle::m_CurrentStoredValue = *(int*)0xB79FD0;
 RwRGBA &CTimeCycle::m_BelowHorizonGrey = *(RwRGBA*)0xB7CB10;
+#ifdef REPLACE
+CColourSet CTimeCycle::m_CurrentColours;
+CColourSet &CTimeCycle::m_CurrentColours_exe = *(CColourSet*)0xB7C4A0;
+#else
 CColourSet &CTimeCycle::m_CurrentColours = *(CColourSet*)0xB7C4A0;
+#endif
 
-WRAPPER void CTimeCycle::SetConstantParametersForPostFX(void) { EAXJMP(0x560210); }
+void
+CTimeCycle::SetConstantParametersForPostFX(void)
+{
+	if(!CPostEffects::IsVisionFXActive())
+		return;
+	if(CPostEffects::m_bNightVision){
+		m_CurrentColours.shd = 0;
+		m_CurrentColours.lightshd = 0;
+		m_CurrentColours.poleshd = 0;
+		m_CurrentColours.ambr = 0.0;
+		m_CurrentColours.ambg = 0.4;
+		m_CurrentColours.ambb = 0.0;
+		m_CurrentColours.ambobjr = 0.0;
+		m_CurrentColours.ambobjg = 0.4;
+		m_CurrentColours.ambobjb = 0.0;
+		m_CurrentColours.skytopr = 0;
+		m_CurrentColours.skytopg = 128;
+		m_CurrentColours.skytopb = 0;
+		m_CurrentColours.skybotr = 0;
+		m_CurrentColours.skybotg = 128;
+		m_CurrentColours.skybotb = 0;
+	}
+	if(CPostEffects::m_bInfraredVision){
+		m_CurrentColours.shd = 0;
+		m_CurrentColours.lightshd = 0;
+		m_CurrentColours.poleshd = 0;
+		m_CurrentColours.lightonground = 0;
+		m_CurrentColours.intensityLimit = 0;
+		m_CurrentColours.waterfogalpha = 0;
+		m_CurrentColours.ambr = 0.0;
+		m_CurrentColours.ambg = 0.0;
+		m_CurrentColours.ambb = 1.0;
+		m_CurrentColours.ambobjr = 0.0;
+		m_CurrentColours.ambobjg = 0.0;
+		m_CurrentColours.ambobjb = 1.0;
+		m_CurrentColours.skytopr = 0;
+		m_CurrentColours.skytopg = 0;
+		m_CurrentColours.skytopb = 128;
+		m_CurrentColours.skybotr = 0;
+		m_CurrentColours.skybotg = 0;
+		m_CurrentColours.skybotb = 128;
+	}
+}
 
 void
 CTimeCycle::StartExtraColour(int extracolor, int keepInter)
@@ -523,4 +570,34 @@ CTimeCycle::CalcColoursForPoint(float x, float y, float z, CColourSet *colorset)
 		colorset->lodDistMult = (f/1000.0 + 1.0) * colorset->lodDistMult;
 
 	SetConstantParametersForPostFX();
+}
+
+double
+CTimeCycle::FindFarClipForCoors(float x, float y, float z)
+{
+	CColourSet s;
+	bool extraOn;
+	float extraInter;
+	extraOn = CTimeCycle::m_bExtraColourOn != 0;
+	extraInter = CTimeCycle::m_ExtraColourInter;
+	CTimeCycle::m_bExtraColourOn = 0;
+	CTimeCycle::m_ExtraColourInter = 0.0;
+	CTimeCycle::CalcColoursForPoint(x, y, z, &s);
+	CTimeCycle::m_bExtraColourOn = extraOn;
+	CTimeCycle::m_ExtraColourInter = extraInter;
+	return s.farclp;
+}
+
+void
+CTimeCycle::Update(void)
+{
+	RwV3d *pos;
+	if(*(CMatrix**)(0xB6F028 + 0x14))	// TheCamera coords
+		pos = &(*(CMatrix**)(0xB6F028 + 0x14))->matrix.pos;
+	else
+		pos = ((RwV3d*)(0xB6F028 + 0x4));
+	CalcColoursForPoint(pos->x, pos->y, pos->z, &m_CurrentColours);
+#ifdef REPLACE
+	memcpy(&m_CurrentColours_exe, &m_CurrentColours, 0xAC);
+#endif
 }

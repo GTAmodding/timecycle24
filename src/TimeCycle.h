@@ -86,11 +86,18 @@ public:
 	static float *m_fShadowDisplacementY;	// [16]
 	static int &m_CurrentStoredValue;
 	static RwRGBA &m_BelowHorizonGrey;
+#ifdef REPLACE
+	static CColourSet m_CurrentColours;
+	static CColourSet &m_CurrentColours_exe;
+#else
 	static CColourSet &m_CurrentColours;
+#endif
 
 	static void Initialise(bool unused);
 	static void CalcColoursForPoint(float x, float y, float z, CColourSet *colorset);
 	static void StartExtraColour(int extracolor, int keepInter);
 	static void FindTimeCycleBox(float x, float y, float z, CTimeCycleBox **box, float *interp, bool checkLod, bool checkFar, CTimeCycleBox *exclude);
 	static void SetConstantParametersForPostFX(void);
+	static double FindFarClipForCoors(float x, float y, float z);
+	static void Update(void);
 };

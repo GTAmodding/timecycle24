@@ -9,6 +9,10 @@
 #include <rwcore.h>
 #include "MemoryMgr.h"
 
+// when this is defined, the whole TimeCycle is replaced,
+// not just patched to use 24 hours
+#define REPLACE
+
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -87,6 +91,13 @@ struct CCullZones
 struct CCutsceneMgr
 {
 	static bool &ms_running;
+};
+
+struct CPostEffects
+{
+	static bool IsVisionFXActive(void);
+	static bool &m_bNightVision;
+	static bool &m_bInfraredVision;
 };
 
 void CShadows__CalcPedShadowValues(float x, float y, float z, float *sfx, float *sfy, float *ssx, float *ssy, float *sdx, float *sdy);

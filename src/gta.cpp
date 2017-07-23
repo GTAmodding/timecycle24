@@ -41,5 +41,9 @@ WRAPPER bool CCullZones::CamNoRain(void) { EAXJMP(0x72DDB0); }
 
 bool &CCutsceneMgr::ms_running = *(bool*)0xB5F851;
 
+WRAPPER bool CPostEffects::IsVisionFXActive(void) { EAXJMP(0x7034F0); }
+bool &CPostEffects::m_bNightVision = *(bool*)0xC402B8;
+bool &CPostEffects::m_bInfraredVision = *(bool*)0xC402B9;
+
 WRAPPER void CShadows__CalcPedShadowValues(float x, float y, float z, float *sfx, float *sfy, float *ssx, float *ssy, float *sdx, float *sdy)
 { WRAPARG(x); WRAPARG(y); WRAPARG(z); WRAPARG(sfx); WRAPARG(sfy); WRAPARG(ssx); WRAPARG(ssy); WRAPARG(sdx); WRAPARG(sdy); EAXJMP(0x7076C0); }
