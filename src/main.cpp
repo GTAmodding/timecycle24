@@ -68,6 +68,12 @@ mod24_2(void)
 void
 patch(void)
 {
+	// HOODLUM
+	if(*(uint*)0x55F4C5 == 0xFFEA63EE){
+		// restore movzx instruction (replace jump)
+		struct{uchar m[3];} m = { {0x0F, 0xB6, 0xB9} };
+		Patch(0x55F4C2, m);
+	}
 	Patch<void*>(0x55F7C7, (void*)&CTimeCycle::m_nDirectionalMult);
 	Patch<void*>(0x5BBFEC, (void*)&CTimeCycle::m_nDirectionalMult);
 	Patch<void*>(0x55F7B8, (void*)&CTimeCycle::m_nWaterFogAlpha);

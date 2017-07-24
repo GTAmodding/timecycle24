@@ -40,8 +40,8 @@ public:
 	static uchar m_nLowCloudsGreen[NUMHOURS][NUMWEATHERS];
 	static uchar m_nLowCloudsRed[NUMHOURS][NUMWEATHERS];
 	static uchar m_fLightsOnGroundBrightness[NUMHOURS][NUMWEATHERS];
-	static ushort m_fFogStart[NUMHOURS][NUMWEATHERS];
-	static ushort m_fFarClip[NUMHOURS][NUMWEATHERS];
+	static short m_fFogStart[NUMHOURS][NUMWEATHERS];
+	static short m_fFarClip[NUMHOURS][NUMWEATHERS];
 	static uchar m_nPoleShadowStrength[NUMHOURS][NUMWEATHERS];
 	static uchar m_nLightShadowStrength[NUMHOURS][NUMWEATHERS];
 	static uchar m_nShadowStrength[NUMHOURS][NUMWEATHERS];
