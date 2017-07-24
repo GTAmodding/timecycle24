@@ -223,7 +223,7 @@ patch(void)
 	InjectHook(0x55F870, &CColourSet::Interpolate, PATCH_JUMP);
 	InjectHook(0x5603D0, CTimeCycle::CalcColoursForPoint, PATCH_JUMP);
 	InjectHook(0x5616E0, CTimeCycle::FindFarClipForCoors, PATCH_JUMP);
-	InjectHook(0x5616E0, CTimeCycle::Update, PATCH_JUMP);
+	InjectHook(0x561760, CTimeCycle::Update, PATCH_JUMP);
 #endif
 }
 
