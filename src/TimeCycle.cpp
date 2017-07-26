@@ -316,10 +316,10 @@ CTimeCycle::CalcColoursForPoint(float x, float y, float z, CColourSet *colorset)
 		boxWeather = (weatherBox->extraColor / NUMHOURS) + 21;
 		boxHour = weatherBox->extraColor % 8;
 	}
-	CColourSet curold(curHour, CWeather::OldWeatherType);
-	CColourSet nextold(nextHour, CWeather::OldWeatherType);
-	CColourSet curnew(curHour, CWeather::NewWeatherType);
-	CColourSet nextnew(nextHour, CWeather::NewWeatherType);
+	CColourSet curold(curHourSel, CWeather::OldWeatherType);
+	CColourSet nextold(nextHourSel, CWeather::OldWeatherType);
+	CColourSet curnew(curHourSel, CWeather::NewWeatherType);
+	CColourSet nextnew(nextHourSel, CWeather::NewWeatherType);
 
 	if(*(CMatrix**)(0xB6F028 + 0x14))	// TheCamera coords
 		camZ = (*(CMatrix**)(0xB6F028 + 0x14))->matrix.pos.z;
